@@ -1,11 +1,10 @@
-/*Nivel aventureiro
-Nesse nivel criei dois menus utilizando o switch: um principal e um para escolher um atributo como criterio de desempate. 
-deixei a saida de dados mais amigavel possivel para o jogador */
-
+/*Nivel Mestre*/
+/*Nesse nivel, foi feita a logica para que o usuario escolha quais atributos ele quer usar como criterio de desempate, implementei também a logica para que o usuário não consiga utilizar o mesmo atributo duas vezes
+foram feitas melhorias na legibilidade, deixando tanto a saida de dados quanto o codigo melhor para se ler */
 #include <stdio.h>
 
-typedef struct SuperTrunfo { // Criando struct para armazenar os dados das cartas
-    char estado[3];
+typedef struct SuperTrunfo {
+    char pais[50];
     char codigoDaCarta[4];
     char nomeDaCidade[60];
     int pontosTuristicos;
@@ -13,7 +12,6 @@ typedef struct SuperTrunfo { // Criando struct para armazenar os dados das carta
 } SuperTrunfo;
 
 int main() {
-    int opcao;   
 
     printf("=================================\n");
     printf(" Bem-vindo ao Super Trunfo! 🎴\n");
@@ -21,6 +19,7 @@ int main() {
     printf("Prepare-se para desafiar seus oponentes em partidas emocionantes!\n");
     printf("Escolha suas cartas com sabedoria e vença o jogo!\n\n");
 
+    int opcao;
     printf("Escolha uma opção: \n");
     printf("1. Jogar \n");
     printf("2. Regras \n");
@@ -30,14 +29,14 @@ int main() {
 
     switch (opcao) {
         case 1: {
-            struct SuperTrunfo carta1, carta2; 
+            struct SuperTrunfo carta1, carta2;
 
+            // Primeira carta
             printf("\nInsira os dados da primeira carta:\n");
 
-            // Entrada de dados para a primeira carta
-            printf("Estado (ex: SP): ");
-            scanf("%2s", carta1.estado);
-            getchar();
+            printf("País: ");
+            getchar(); // Limpa o buffer antes de ler o país
+            fgets(carta1.pais, sizeof(carta1.pais), stdin);
 
             printf("Nome da Cidade: ");
             fgets(carta1.nomeDaCidade, sizeof(carta1.nomeDaCidade), stdin);
@@ -61,12 +60,12 @@ int main() {
             carta1.densidadePopulacional = carta1.populacao / carta1.area;
             carta1.pIBperCapita = carta1.pib / carta1.populacao;
 
+            // Segunda carta
             printf("\nInsira os dados da segunda carta:\n");
 
-            // Entrada de dados para a segunda carta
-            printf("Estado (ex: SP): ");
-            scanf("%2s", carta2.estado);
-            getchar();
+            printf("País: ");
+            getchar(); // Limpa o buffer antes de ler o país
+            fgets(carta2.pais, sizeof(carta2.pais), stdin);
 
             printf("Nome da Cidade: ");
             fgets(carta2.nomeDaCidade, sizeof(carta2.nomeDaCidade), stdin);
@@ -88,43 +87,93 @@ int main() {
 
             // Cálculos da carta 2
             carta2.densidadePopulacional = carta2.populacao / carta2.area;
-            carta2.pIBperCapita = carta2.pib / carta2.populacao; 
+            carta2.pIBperCapita = carta2.pib / carta2.populacao;
 
             // Escolha do critério de desempate
-            int desempate1, desempate2;
-            char escolha;
-        
-            printf("\nEscolha um atributo como critério de desempate: \n");
+            float desempate1, desempate2, desempate11, desempate22;
+            char escolha, escolha2;
+
+            printf("\nEscolha o primeiro atributo como critério de desempate: \n");
             printf("a. PIB\n");
             printf("b. População\n");
             printf("c. Pontos Turísticos\n");
             printf("d. Área\n");
             printf("> ");
-            scanf(" %c", &escolha);
+            getchar(); // Limpa o buffer antes de ler o critério
+            scanf("%c", &escolha2);
 
-            switch (escolha) {
+            switch (escolha2) {
                 case 'a':
                     desempate1 = carta1.pib;
                     desempate2 = carta2.pib;
+                    printf("Atributo PIB escolhido\n");
                     break;
                 case 'b':
                     desempate1 = carta1.populacao;
                     desempate2 = carta2.populacao;
+                    printf("Atributo população escolhido\n");
                     break;
                 case 'c':
                     desempate1 = carta1.pontosTuristicos;
                     desempate2 = carta2.pontosTuristicos;
+                    printf("Atributo Pontos Turisticos escolhido\n");
                     break;
                 case 'd':
                     desempate1 = carta1.area;
                     desempate2 = carta2.area;
+                    printf("Atributo área escolhido\n");
                     break;
                 default:
                     printf("Opção Inválida!\n");
                     return 1;
             }
 
-            printf("\nCritério de desempate escolhido: %c\n", escolha);
+            while(1) {
+                printf("\nEscolha o segundo atributo como critério de desempate: \n");
+                printf("a. PIB\n");
+                printf("b. População\n");
+                printf("c. Pontos Turísticos\n");
+                printf("d. Área\n");
+                printf("> ");
+                getchar(); // Limpa o buffer antes de ler o critério
+                scanf("%c", &escolha2);
+
+                if (escolha2 == escolha) {
+                    printf("Você já escolheu esse atributo! Tente novamente.\n");
+                    continue;
+                }
+
+                switch (escolha2) {
+                    case 'a':
+                        desempate11 = carta1.pib;
+                        desempate22 = carta2.pib;
+                        printf("Atributo PIB escolhido\n");
+                        break;
+                    case 'b':
+                        desempate11 = carta1.populacao;
+                        desempate22 = carta2.populacao;
+                        printf("Atributo população escolhido\n");
+                        break;
+                    case 'c':
+                        desempate11 = carta1.pontosTuristicos;
+                        desempate22 = carta2.pontosTuristicos;
+                        printf("Atributo Pontos Turisticos escolhido\n");
+                        break;
+                    case 'd':
+                        desempate11 = carta1.area;
+                        desempate22 = carta2.area;
+                        printf("Atributo área escolhido\n");
+                        break;
+                    default:
+                        printf("Opção Inválida! Tente novamente.\n");
+                        continue;
+                }
+                break;
+            }
+
+            // Soma dos atributos escolhidos
+            float SomaTotal1 = desempate1 + desempate11;
+            float SomaTotal2 = desempate2 + desempate22;
 
             // Comparação das cartas
             printf("\n============================\n");
@@ -132,19 +181,19 @@ int main() {
             printf("============================\n");
 
             if (carta1.densidadePopulacional < carta2.densidadePopulacional) {
-                printf("Vencedor: %s (Menor Densidade Populacional: %.2f)\n", 
-                       carta1.nomeDaCidade, carta1.densidadePopulacional);
+                printf("Vencedor: %s do País %s (Menor Densidade Populacional: %.2f)\n", carta1.nomeDaCidade, carta1.pais, carta1.densidadePopulacional);
             } else if (carta2.densidadePopulacional < carta1.densidadePopulacional) {
-                printf("Vencedor: %s (Menor Densidade Populacional: %.2f)\n", 
-                       carta2.nomeDaCidade, carta2.densidadePopulacional);
+                printf("Vencedor: %s do País %s (Menor Densidade Populacional: %.2f)\n", carta2.nomeDaCidade, carta2.pais, carta2.densidadePopulacional);
             } else {
                 printf("Empate na Densidade Populacional!\n");
                 printf("*** Desempate pelo critério escolhido ***\n");
 
-                if (desempate1 > desempate2) {
-                    printf("Vencedor: %s pelo critério de desempate!\n", carta1.nomeDaCidade);
-                } else if (desempate2 > desempate1) {
-                    printf("Vencedor: %s pelo critério de desempate!\n", carta2.nomeDaCidade);
+                if (SomaTotal1 > SomaTotal2) {
+                    printf("Vencedor: %s  do País %s pela soma total dos atributos!\n", carta1.nomeDaCidade, carta1.pais);
+                    printf("Soma total: %.3f\n", SomaTotal1);
+                } else if (SomaTotal2 > SomaTotal1) {
+                    printf("Vencedor: %s do País %s pela soma total dos atributos!\n", carta2.nomeDaCidade, carta2.pais);
+                    printf("Soma total: %.3f\n", SomaTotal2);
                 } else {
                     printf("Empate total entre as duas cartas!\n");
                 }
@@ -159,11 +208,11 @@ int main() {
             printf("- Em caso de empate, o desempate ocorre pelo critério escolhido!\n");
             break;
 
-        case 3: 
+        case 3:
             printf("\nObrigado por jogar! 😉\n");
             break;
-            
-        default: 
+
+        default:
             printf("\nOpção inválida!\n");
     }
 
