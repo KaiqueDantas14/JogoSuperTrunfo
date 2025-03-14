@@ -100,9 +100,9 @@ int main() {
             printf("d. Área\n");
             printf("> ");
             getchar(); // Limpa o buffer antes de ler o critério
-            scanf("%c", &escolha2);
+            scanf("%c", &escolha);
 
-            switch (escolha2) {
+            switch (escolha) {
                 case 'a':
                     desempate1 = carta1.pib;
                     desempate2 = carta2.pib;
